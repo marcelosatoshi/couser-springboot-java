@@ -12,10 +12,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.marcelo.course.entities.Category;
 import com.marcelo.course.entities.Order;
+import com.marcelo.course.entities.OrderItem;
 import com.marcelo.course.entities.Product;
 import com.marcelo.course.entities.User;
 import com.marcelo.course.entities.enums.OrderStatus;
 import com.marcelo.course.repositories.CategoryRepository;
+import com.marcelo.course.repositories.OrderItemRepository;
 import com.marcelo.course.repositories.OrderRepository;
 import com.marcelo.course.repositories.ProductRepository;
 import com.marcelo.course.repositories.UserRepository;
@@ -35,6 +37,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private OrderItemRepository orderitemRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -83,6 +88,19 @@ public class TestConfig implements CommandLineRunner {
 
 		userRepository.saveAll(list);
 		orderRepository.saveAll(list2);
+		
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+		
+		List<OrderItem> list4 = new ArrayList<>();
+		list4.add(oi1);
+		list4.add(oi2);
+		list4.add(oi3);
+		list4.add(oi4);
+		
+		orderitemRepository.saveAll(list4);
 
 	}
 
