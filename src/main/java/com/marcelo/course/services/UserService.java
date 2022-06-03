@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.marcelo.course.entities.User;
@@ -30,5 +31,17 @@ public class UserService {
 	
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+	
+	public User update(Long id , User obj) {
+		User entity = repository.getOne(id);
+		
+		if (!repository.existsById(id)) {
+			return null;
+		}
+
+		obj.setId(id);
+		obj	 = repository.save(obj);
+		return obj;
 	}
 }
