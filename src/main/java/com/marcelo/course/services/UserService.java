@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.marcelo.course.entities.User;
+import com.marcelo.course.entities.exceptions.ResourceNotFoundException;
 import com.marcelo.course.repositories.UserRepository;
 
 @Service
@@ -22,7 +22,7 @@ public class UserService {
 
 	public User findById(Long Id) {
 		Optional<User> obj = repository.findById(Id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(Id));
 	}
 	
 	public User insert(User obj) {
@@ -34,7 +34,6 @@ public class UserService {
 	}
 	
 	public User update(Long id , User obj) {
-		User entity = repository.getOne(id);
 		
 		if (!repository.existsById(id)) {
 			return null;
