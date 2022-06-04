@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.marcelo.course.entities.exceptions.DataBaseException;
 import com.marcelo.course.entities.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -18,6 +19,15 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandadError> resourceNotFound(ResourceNotFoundException e , HttpServletRequest request) {
 		String error = "Resource not found";
 		HttpStatus status = HttpStatus.NOT_FOUND;
+		StandadError err = new StandadError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
+
+	@ExceptionHandler(DataBaseException.class)
+	public ResponseEntity<StandadError> dataBase(DataBaseException e , HttpServletRequest request) {
+		String error = "DataBase error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandadError err = new StandadError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
